@@ -1,12 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"go-core.course/homework-1/task-1-fib-by-number/pkg/fib"
 )
 
 func main() {
-	fmt.Println(fib.Fib(5))
-	fmt.Println(fib.Fib(15))
-	fmt.Println(fib.Fib(20))
+	numberPtr := flag.Int64("number", 5, "an int64")
+	flag.Parse()
+	seqNum := *numberPtr
+	if (seqNum < 0 || seqNum > 20) {
+		fmt.Println("number must be in 1..20 range")
+		return 
+	}
+	fmt.Println(fib.Fib(seqNum))
 }
