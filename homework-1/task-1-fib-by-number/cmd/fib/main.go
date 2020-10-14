@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	numberPtr := flag.Int64("number", 5, "an int64")
+	seqNum := flag.Int64("number", 5, "a Fibonacchi sequence number")
 	flag.Parse()
 	seqNum := *numberPtr
 	if (seqNum < 0 || seqNum > 20) {
