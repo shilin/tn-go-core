@@ -13,5 +13,5 @@ func main() {
 		fmt.Println("number must be in 1..20 range")
 		return 
 	}
-	fmt.Println(fib.Fib(*seqNum))
+	fmt.Println(fib.Num(*seqNum))
 }
