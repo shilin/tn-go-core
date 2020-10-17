@@ -8,9 +8,9 @@ import (
 )
 
 func main() {
-	seqNum := flag.Int64("number", 5, "a Fibonacchi sequence number")
+	seqNum := flag.Int("number", 5, "a Fibonacchi sequence number")
 	flag.Parse()
-	if *seqNum < 0 || *seqNum > 20 {
+	if *seqNum < 0 || *seqNum > 21 {
 		fmt.Println("number must be in 1..20 range")
 		return
 	}
