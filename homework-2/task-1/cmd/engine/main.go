@@ -47,7 +47,8 @@ func main() {
 		for source, v := range hashMap {
 			for url, title := range v {
 
-				if strings.Contains(url, word) || strings.Contains(title, word) {
+				word = strings.ToLower(word)
+				if strings.Contains(strings.ToLower(url), word) || strings.Contains(strings.ToLower(title), word) {
 					fmt.Printf("source url - %s. url - %s, title - %s\n", source, url, title)
 				}
 			}
