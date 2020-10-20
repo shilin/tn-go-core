@@ -23,6 +23,7 @@ func main() {
 		data, err := spider.Scan(site, depth)
 		if err != nil {
 			log.Println(err)
+			continue
 		}
 		hashMap[site] = data
 	}
@@ -36,17 +37,18 @@ func main() {
 			continue
 		}
 		word = strings.TrimSuffix(word, "\n")
+		word = strings.TrimSuffix(word, "\r")
 		if len(word) == 0 {
 			fmt.Println("empty word!")
 			continue
 		}
 
 		// check for substring in urls and titles
-		for _, v := range hashMap {
+		for source, v := range hashMap {
 			for url, title := range v {
 
 				if strings.Contains(url, word) || strings.Contains(title, word) {
-					fmt.Printf("%s - %s\n", url, title)
+					fmt.Printf("source url - %s. url - %s, title - %s\n", source, url, title)
 				}
 			}
 		}
