@@ -27,6 +27,7 @@ func main() {
 		data, err := spider.Scan(site, depth)
 		if err != nil {
 			log.Println(err)
+			continue
 		}
 		hashMap[site] = data
 	}
