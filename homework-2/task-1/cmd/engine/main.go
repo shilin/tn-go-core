@@ -32,11 +32,11 @@ func main() {
 	}
 
 	// check for substring in urls and titles
-	for _, v := range hashMap {
+	for source, v := range hashMap {
 		for url, title := range v {
 
 			if strings.Contains(url, *word) || strings.Contains(title, *word) {
-				fmt.Printf("%s - %s\n", url, title)
+				fmt.Printf("source url - %s. url - %s, title - %s\n", source, url, title)
 			}
 		}
 	}
