@@ -7,7 +7,9 @@ import (
 	"os"
 	"strings"
 
-	"go-core.course/homework-2/task-1/pkg/spider"
+	// we can import a substitution for a spider pkg, like:
+	// "go-core.course/homework-3/task-1/pkg/dummySpider"
+	"go-core.course/homework-3/task-1/pkg/spider"
 )
 
 type Scanner interface {
@@ -17,8 +19,10 @@ type Scanner interface {
 type sauron struct {
 }
 
+// Here we can plug in a different Scan function from another package
 func (s *sauron) Scan(url string, depth int) (map[string]string, error) {
 	return spider.Scan(url, depth)
+	// return dummySpider.Scan(url, depth)
 }
 
 func main() {
@@ -28,10 +32,10 @@ func main() {
 	// result is a map of sites mapped to url to page title
 	hashMap := make(map[string]map[string]string)
 
-	fmt.Println("Please wait, scanning sites...")
-
 	var fetcher Scanner
 	fetcher = &sauron{}
+
+	fmt.Println("Please wait, scanning sites...")
 
 	for _, site := range sites {
 		data, err := fetcher.Scan(site, depth)
@@ -41,6 +45,8 @@ func main() {
 		}
 		hashMap[site] = data
 	}
+
+	fmt.Println(hashMap)
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
