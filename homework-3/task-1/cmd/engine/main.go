@@ -10,7 +10,7 @@ import (
 	"go-core.course/homework-2/task-1/pkg/spider"
 )
 
-type scanner interface {
+type Scanner interface {
 	Scan(string, int) (map[string]string, error)
 }
 
@@ -30,7 +30,7 @@ func main() {
 
 	fmt.Println("Please wait, scanning sites...")
 
-	var fetcher scanner
+	var fetcher Scanner
 	fetcher = &sauron{}
 
 	for _, site := range sites {
