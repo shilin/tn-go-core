@@ -6,12 +6,18 @@ import (
 	"net/http"
 	"strings"
 
+	// "go-core.course/homework-3/task-1/pkg/fetch"
+	// "fetch"
 	"golang.org/x/net/html"
 )
 
+type Spider struct { }
+
 // Scan осуществляет рекурсивный обход ссылок сайта, указанного в URL,
 // с учётом глубины перехода по ссылкам, переданной в depth.
-func Scan(url string, depth int) (data map[string]string, err error) {
+func (s *Spider) Scan(url string, depth int) (data map[string]string, err error) {
+
+// func Scan(url string, depth int) (data map[string]string, err error) {
 	data = make(map[string]string)
 
 	parse(url, url, depth, data)

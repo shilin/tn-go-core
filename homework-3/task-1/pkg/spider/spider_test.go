@@ -6,12 +6,14 @@ package spider
 
 import (
 	"testing"
+
 )
 
 func TestScanSite(t *testing.T) {
 	const url = "https://habr.com"
 	const depth = 2
-	data, err := Scan(url, depth)
+	s := Spider{}
+	data, err := s.Scan(url, depth)
 	if err != nil {
 		t.Fatal(err)
 	}

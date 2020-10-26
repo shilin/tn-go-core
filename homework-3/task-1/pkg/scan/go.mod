@@ -1,4 +1,4 @@
-module go-core.course/homework-3/task-1/pkg/dummySpider
+module go-core.course/homework-3/task-1/pkg/scan
 
 go 1.15
 
