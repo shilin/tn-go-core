@@ -9,7 +9,7 @@ type Dummy struct {
 	scan.Scanner
 }
 
-func (f *Dummy) Scan(url string, depth int) (data map[string]string, err error) {
+func (d *Dummy) Scan(url string, depth int) (data map[string]string, err error) {
 	data = map[string]string{
 		"https://yandex.ru/collections/":  "Яндекс.Коллекции",
 		"https://yandex.ru/all":           "Все сервисы Яндекса",
