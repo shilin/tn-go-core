@@ -8,11 +8,10 @@ import (
 	"strings"
 
 	"go-core.course/homework-3/task-1/pkg/spider"
-	// we can import a substitution for a spider pkg 
+	// we can import a substitution for a spider pkg
 	// "go-core.course/homework-3/task-1/pkg/dummyFetch"
 	"go-core.course/homework-3/task-1/pkg/scan"
 )
-
 
 func main() {
 	sites := []string{"https://yandex.ru", "https://ya.ru"}
