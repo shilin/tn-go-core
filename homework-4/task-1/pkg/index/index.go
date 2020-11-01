@@ -1,9 +1,8 @@
 package index
 
 import (
-	"fmt"
-	"strings"
 	"sort"
+	"strings"
 )
 
 type Doc struct {
@@ -24,23 +23,17 @@ func (d ById) Less(i, j int) bool {
 	return d[i].Id < d[j].Id
 }
 
+type IndexedWords map[string][]int
 
-func Build(hm map[string]string) (ById, map[string][]int, error) {
-	indexedWords := map[string][]int{}
-
-	// hm1 := map[string]string{
-	// 	"https://yandex.ru/collections/":  "Яндекс.Коллекции",
-	// 	"https://yandex.ru/all":           "Все сервисы Яндекса",
-	// 	"https://yandex.ru/blog/company/": "Блог Яндекса",
-	// }
-
+func Build(hm map[string]string) (ById, IndexedWords, error) {
+	indexedWords := IndexedWords{}
 	docs := ById{}
 
 	i := 0
 	for url, title := range hm {
 		newDoc := Doc{
-			Id: i,
-			URL: url,
+			Id:    i,
+			URL:   url,
 			Title: title,
 		}
 		words := strings.Split(title, " ")
@@ -51,14 +44,8 @@ func Build(hm map[string]string) (ById, map[string][]int, error) {
 		}
 
 		i++
-
 		docs = append(docs, newDoc)
-		// fmt.Printf("id - %d. url - %s, title - %s\n", newDoc.Id, newDoc.URL, newDoc.Title)
 	}
-		// fmt.Printf("source url - %s. url - %s, title - %s\n", source, url, title)
-		fmt.Println(docs)
-
-		sort.Sort(docs)
-		// fmt.Println(docs)
+	sort.Sort(docs)
 	return docs, indexedWords, nil
 }

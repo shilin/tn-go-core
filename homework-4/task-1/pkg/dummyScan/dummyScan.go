@@ -3,7 +3,7 @@ package dummyScan
 
 // Scan осуществляет рекурсивный обход ссылок сайта, указанного в URL,
 // с учётом глубины перехода по ссылкам, переданной в depth.
-import "go-core.course/homework-3/task-1/pkg/scan"
+import "go-core.course/homework-4/task-1/pkg/scan"
 
 type Dummy struct {
 	scan.Scanner

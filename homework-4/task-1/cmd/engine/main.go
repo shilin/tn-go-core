@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sort"
 
 	"go-core.course/homework-4/task-1/pkg/spider"
 	// we can import a substitution for a spider pkg
@@ -19,7 +20,7 @@ func main() {
 
 	s := new(spider.Spider)
 	parsedSites := scanResults(s, sites, depth)
-	_, indexedWords, _ := index.Build(parsedSites)
+	docs, indexedWords, _ := index.Build(parsedSites)
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -46,6 +47,12 @@ func main() {
 		}
 		fmt.Println(resultNums)
 
+		for _, num := range resultNums {
+			j := sort.Search(len(docs), func(i int) bool { return docs[i].Id == num })
+			if j < len(docs)  {
+				fmt.Printf("Слово встречается в %s - %s \n", docs[j].URL, docs[j].Title)
+			}
+		}
 	}
 }
 
