@@ -7,10 +7,10 @@ import (
 	"os"
 	"strings"
 
-	"go-core.course/homework-3/task-1/pkg/spider"
+	"go-core.course/homework-4/task-1/pkg/spider"
 	// we can import a substitution for a spider pkg
-	// "go-core.course/homework-3/task-1/pkg/dummyFetch"
-	"go-core.course/homework-3/task-1/pkg/scan"
+	"go-core.course/homework-4/task-1/pkg/index"
+	"go-core.course/homework-4/task-1/pkg/scan"
 )
 
 func main() {
@@ -18,7 +18,8 @@ func main() {
 	depth := 2
 
 	s := new(spider.Spider)
-	hashMap := scanResults(s, sites, depth)
+	parsedSites := scanResults(s, sites, depth)
+	_, indexedWords, _ := index.Build(parsedSites)
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -30,27 +31,27 @@ func main() {
 		}
 		word = strings.TrimSuffix(word, "\n")
 		word = strings.TrimSuffix(word, "\r")
+		word = strings.ToLower(word)
 		if len(word) == 0 {
 			fmt.Println("empty word!")
 			continue
 		}
 
+		resultNums := []int{}
 		// check for substring in urls and titles
-		for source, v := range hashMap {
-			for url, title := range v {
-
-				word = strings.ToLower(word)
-				if strings.Contains(strings.ToLower(url), word) || strings.Contains(strings.ToLower(title), word) {
-					fmt.Printf("source url - %s. url - %s, title - %s\n", source, url, title)
-				}
+		for indexedWord, docNums := range indexedWords {
+			if strings.Contains(strings.ToLower(indexedWord), word) {
+				resultNums = append(resultNums, docNums...)
 			}
 		}
+		fmt.Println(resultNums)
+
 	}
 }
 
-func scanResults(s scan.Scanner, sites []string, depth int) map[string]map[string]string {
-	// result is a map of sites mapped to url to page title
-	hashMap := make(map[string]map[string]string)
+func scanResults(s scan.Scanner, sites []string, depth int) map[string]string {
+	// result is a map of urls to page title
+	parsedSites := make(map[string]string)
 
 	fmt.Println("Please wait, scanning sites...")
 
@@ -60,9 +61,10 @@ func scanResults(s scan.Scanner, sites []string, depth int) map[string]map[strin
 			log.Println(err)
 			continue
 		}
-		hashMap[site] = data
+		// merge new data
+		for k, v := range data {
+			parsedSites[k] = v
+		}
 	}
-
-	fmt.Println(hashMap)
-	return hashMap
+	return parsedSites
 }
