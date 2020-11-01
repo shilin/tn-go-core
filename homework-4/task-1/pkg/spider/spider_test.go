@@ -6,7 +6,6 @@ package spider
 
 import (
 	"testing"
-
 )
 
 func TestScanSite(t *testing.T) {
