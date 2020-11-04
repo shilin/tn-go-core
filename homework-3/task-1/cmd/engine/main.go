@@ -17,7 +17,6 @@ func main() {
 	sites := []string{"https://yandex.ru", "https://ya.ru"}
 	depth := 2
 
-	// s := new(dummyScan.DummyScan)
 	s := new(spider.Spider)
 	hashMap := scanResults(s, sites, depth)
 
@@ -66,5 +65,4 @@ func scanResults(s scan.Scanner, sites []string, depth int) map[string]map[strin
 
 	fmt.Println(hashMap)
 	return hashMap
-
 }
