@@ -5,34 +5,41 @@ import (
 	"strings"
 )
 
+// Doc is a struct for representing page with URL and Title
 type Doc struct {
-	Id    int
+	ID    int
 	URL   string
 	Title string
 }
 
-type ById []Doc
+// byID is a type to implement esenting page with URL and Title
+type byID []Doc
 
-func (d ById) Len() int {
+var docs byID
+
+var nextID int
+
+func (d byID) Len() int {
 	return len(d)
 }
-func (d ById) Swap(i, j int) {
+func (d byID) Swap(i, j int) {
 	d[i], d[j] = d[j], d[i]
 }
-func (d ById) Less(i, j int) bool {
-	return d[i].Id < d[j].Id
+func (d byID) Less(i, j int) bool {
+	return d[i].ID < d[j].ID
 }
 
-type IndexedWords map[string][]int
+// Build produces slice of Docs and inverted index for words
+func Build(hm map[string]string) (byID, map[string][]int) {
+	indexedWords := map[string][]int{}
 
-func Build(hm map[string]string) (ById, IndexedWords, error) {
-	indexedWords := IndexedWords{}
-	docs := ById{}
-
-	i := 0
 	for url, title := range hm {
+		// new Doc will have id of the last Doc in slice plus one
+		if docs.Len() > 0 {
+			nextID = docs[docs.Len()-1].ID + 1
+		}
 		newDoc := Doc{
-			Id:    i,
+			ID:    nextID,
 			URL:   url,
 			Title: title,
 		}
@@ -40,12 +47,20 @@ func Build(hm map[string]string) (ById, IndexedWords, error) {
 		words = append(words, url)
 
 		for _, word := range words {
-			indexedWords[word] = append(indexedWords[word], i)
+			indexedWords[word] = appendID(indexedWords[word], nextID)
 		}
 
-		i++
 		docs = append(docs, newDoc)
 	}
 	sort.Sort(docs)
-	return docs, indexedWords, nil
+	return docs, indexedWords
+}
+
+func appendID(nums []int, id int) []int {
+	for _, v := range nums {
+		if v == id {
+			return nums
+		} 
+	}
+	return append(nums, id)
 }
