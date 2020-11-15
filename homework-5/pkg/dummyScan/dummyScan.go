@@ -5,6 +5,7 @@ package dummyScan
 // с учётом глубины перехода по ссылкам, переданной в depth.
 import "go-core.course/pkg/scan"
 
+// Dummy struct exports testable replacement for Scanner, providing interface
 type Dummy struct {
 	scan.Scanner
 }

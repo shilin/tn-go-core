@@ -1,4 +1,4 @@
-module go-core.course/homework-4/task-1/pkg/dummyScan
+module go-core.course/pkg/dummyScan
 
 
 go 1.15
