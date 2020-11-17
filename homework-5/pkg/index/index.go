@@ -1,8 +1,9 @@
 package index
 
 import (
-	"sort"
 	"strings"
+
+	"go-core.course/pkg/binarytree"
 )
 
 // Doc is a struct for representing page with URL and Title
@@ -12,55 +13,100 @@ type Doc struct {
 	Title string
 }
 
-// byID is a type to implement esenting page with URL and Title
-type byID []Doc
-
-var docs byID
-
-var nextID int
-
-func (d byID) Len() int {
-	return len(d)
-}
-func (d byID) Swap(i, j int) {
-	d[i], d[j] = d[j], d[i]
-}
-func (d byID) Less(i, j int) bool {
-	return d[i].ID < d[j].ID
+// Identity method complies to Identifier interface
+func (d *Doc) Identity() int {
+	return d.ID
 }
 
-// Build produces slice of Docs and inverted index for words
-func Build(hm map[string]string) (byID, map[string][]int) {
+// URLstring method complies to Identifier interface
+func (d *Doc) URLstring() string {
+	return d.URL
+}
+
+// Titlestring method complies to Identifier interface
+func (d *Doc) Titlestring() string {
+	return d.Title
+}
+
+// Build produces binarytree of Docs and inverted index for words
+func Build(hm map[string]string) (*binarytree.Node, map[string][]int) {
 	indexedWords := map[string][]int{}
 
+	docs := new(binarytree.Node)
+	idsLen := len(hm)
+	i := 0
+
+	ids := make([]int, idsLen)
+	for j := 0; j < idsLen; j++ {
+		ids[j] = j
+	}
+
+	var pos int
+
 	for url, title := range hm {
-		// new Doc will have id of the last Doc in slice plus one
-		if docs.Len() > 0 {
-			nextID = docs[docs.Len()-1].ID + 1
+		// cycle through slice of ascenidng natural numbers sequence
+		// using remainder of division by three
+		rem := i % 3
+		i = i + 1
+
+		// initial step - take the center of the whole
+		if rem == 0 {
+			pos = idsLen / 2
 		}
+
+		// second step - take the center of the left half
+		if rem == 1 {
+			pos = idsLen / 4
+		}
+
+		// third step - take the center of the right half
+		// next step after third is initial again...
+		if rem == 2 {
+			pos = 3 * idsLen / 4
+		}
+
+		id := ids[pos]
+		ids = del(ids, pos)
+		idsLen = len(ids)
+
 		newDoc := Doc{
-			ID:    nextID,
+			ID:    id,
 			URL:   url,
 			Title: title,
 		}
-		words := strings.Split(title, " ")
+
+		newNode := new(binarytree.Node)
+		newNode.Identifier = &newDoc
+
+		if docs.Identifier == nil {
+			docs = newNode
+		} else {
+			docs.Insert(newNode)
+		}
+
+		words := strings.Fields(title)
 		words = append(words, url)
 
 		for _, word := range words {
-			indexedWords[word] = appendID(indexedWords[word], nextID)
+			indexedWords[word] = appendID(indexedWords[word], id)
 		}
-
-		docs = append(docs, newDoc)
 	}
-	sort.Sort(docs)
+
 	return docs, indexedWords
+}
+
+func del(s []int, pos int) []int {
+	copy(s[pos:], s[pos+1:])
+	s[len(s)-1] = 0
+	s = s[:len(s)-1]
+	return s
 }
 
 func appendID(nums []int, id int) []int {
 	for _, v := range nums {
 		if v == id {
 			return nums
-		} 
+		}
 	}
 	return append(nums, id)
 }

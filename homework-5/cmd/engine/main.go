@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
+
+	// "sort"
 	"strings"
 
-	"go-core.course/pkg/spider"
 	"go-core.course/pkg/index"
 	"go-core.course/pkg/scan"
+	"go-core.course/pkg/spider"
+	// "go-core.course/pkg/binarytree"
 )
 
 func main() {
@@ -49,28 +51,37 @@ func main() {
 		resultNums = unique(resultNums)
 
 		for _, num := range resultNums {
-			j := sort.Search(len(docs), func(i int) bool { return docs[i].ID >= num })
-			if j < len(docs) &&  docs[j].ID == num {
-				fmt.Printf("Слово встречается в %s - %s \n", docs[j].URL, docs[j].Title)
+			// j := sort.Search(len(docs), func(i int) bool { return docs[i].ID >= num })
+
+			node, error := docs.Find(num)
+			if error != nil {
+				continue
 			}
+			// node.Identity()
+
+			fmt.Printf("Слово встречается в %s - %s \n", node.URLstring(), node.Titlestring())
+			// // if j < len(docs) && docs[j].ID == num {
+			// 	fmt.Printf("Слово встречается в %s - %s \n", docs[j].URL, docs[j].Title)
+			// }
+
 		}
 	}
 }
 
 func unique(intSlice []int) []int {
 	keys := make(map[int]bool)
-	list := []int{} 
+	list := []int{}
 	for _, entry := range intSlice {
-			if _, value := keys[entry]; !value {
-					keys[entry] = true
-					list = append(list, entry)
-			}
-	}    
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
 	return list
 }
 
+// scanResults returns a map of urls to page titles
 func scanResults(s scan.Scanner, sites []string, depth int) map[string]string {
-	// result is a map of urls to page title
 	parsedSites := make(map[string]string)
 
 	fmt.Println("Please wait, scanning sites...")

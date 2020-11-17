@@ -1,73 +1,53 @@
-// package main
-
-// import (
-// 	"fmt"
-// )
-
 package binarytree
 
-// Identifier implies ID method
+// Identifier implies Identity, URLstring, Titlestring methods
 type Identifier interface {
 	Identity() int
-	// setID(int)
+	URLstring() string
+	Titlestring() string
 }
 
-// BinaryTree is a struct representing Binary Tree Structure
-type BinaryTree struct {
-	LeftBranch  *BinaryTree
-	RightBranch *BinaryTree
+// Node is a struct representing Binary Tree Structure
+type Node struct {
+	LeftBranch  *Node
+	RightBranch *Node
 	Identifier
 }
 
-// Doc1 for page
-type Doc1 struct {
-	ID    int
-	URL   string
-	Title string
-}
-
-// Identity returns unique identity
-func (d *Doc1) Identity() int {
-	return d.ID
-}
-
 // Find returns binary tree element
-func (b *BinaryTree) Find(id int) (BinaryTree, error) {
+func (b *Node) Find(id int) (Node, error) {
 	if b.Identity() == id {
-		// fmt.Println("in Find and equals")
 		return *b, nil
 	}
 
 	if id < b.Identity() && b.LeftBranch != nil {
-		// fmt.Println("in Find and left not nil")
 		return b.LeftBranch.Find(id)
 	}
 
 	if id > b.Identity() && b.RightBranch != nil {
-		// fmt.Println("in Find and right not nil")
 		return b.RightBranch.Find(id)
 	}
-	return BinaryTree{}, nil
+	return Node{}, nil
 }
 
 // Insert a node into tree, in place
-func (b *BinaryTree) Insert(node *BinaryTree) {
+func (b *Node) Insert(node *Node) {
+
+	if b.Identifier == nil {
+		b = node
+		return
+	}
+
 	if node.Identity() == b.Identity() {
 		return
 	}
 
 	if node.Identity() < b.Identity() {
-		// fmt.Println("in insert")
 		if b.LeftBranch != nil {
-			// fmt.Println("in insert and leftBranch not nil")
-			// fmt.Printf("in insert and leftBranch Identity %d", b.LeftBranch.Identity())
-			// fmt.Println("")
 			b.LeftBranch.Insert(node)
 			return
 		}
-		// fmt.Println("in insert and leftBranch is nil")
 		b.LeftBranch = node
-		// fmt.Println("in insert and leftBranch is nil")
 	}
 
 	if b.RightBranch != nil {
@@ -76,29 +56,3 @@ func (b *BinaryTree) Insert(node *BinaryTree) {
 	}
 	b.RightBranch = node
 }
-
-// func main() {
-// 	d10 := Doc1{ID: 10}
-// 	d15 := Doc1{ID: 15}
-// 	d25 := Doc1{ID: 25}
-// 	d5 := Doc1{ID: 5}
-// 	d7 := Doc1{ID: 7}
-// 	d8 := Doc1{ID: 8}
-
-// 	root := BinaryTree{Identifier: &d10}
-
-// 	root.LeftBranch = &BinaryTree{Identifier: &d5}
-// 	root.RightBranch = &BinaryTree{Identifier: &d15}
-// 	root.Insert(&BinaryTree{Identifier: &d7})
-// 	root.Insert(&BinaryTree{Identifier: &d25})
-// 	root.Insert(&BinaryTree{Identifier: &d8})
-// 	fmt.Println(root.LeftBranch.RightBranch.Identity())
-// 	// fmt.Println(root.LeftBranch.Identity())
-// 	fmt.Println(root.LeftBranch.RightBranch.RightBranch.Identity())
-// 	// fmt.Println(root.RightBranch.RightBranch.Identity())
-// 	el, err := root.Find(25)
-// 	if err == nil {
-// 		fmt.Println(el.Identity())
-// 	}
-
-// }
