@@ -1,4 +1,4 @@
-module go-core.course/pkg/binarytree
+module go-core.course/pkg/btree
 
 go 1.15
 

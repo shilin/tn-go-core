@@ -3,7 +3,7 @@ package index
 import (
 	"strings"
 
-	"go-core.course/pkg/binarytree"
+	"go-core.course/pkg/btree"
 )
 
 // Doc is a struct for representing page with URL and Title
@@ -58,10 +58,10 @@ func generateID(i int, ids []int) (newI int, newID int, newIDs []int) {
 }
 
 // Build produces binarytree of Docs and inverted index for words
-func Build(hm map[string]string) (*binarytree.Node, map[string][]int) {
+func Build(hm map[string]string) (*btree.Node, map[string][]int) {
 	indexedWords := map[string][]int{}
 
-	docs := new(binarytree.Node)
+	docs := new(btree.Node)
 	i := 0
 	id := 0
 	idsLen := len(hm)
@@ -79,7 +79,7 @@ func Build(hm map[string]string) (*binarytree.Node, map[string][]int) {
 			Title: title,
 		}
 
-		newNode := new(binarytree.Node)
+		newNode := new(btree.Node)
 		newNode.Identifier = &newDoc
 
 		if docs.Identifier == nil {

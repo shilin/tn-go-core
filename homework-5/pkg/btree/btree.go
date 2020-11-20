@@ -1,4 +1,4 @@
-package binarytree
+package btree
 
 // Identifier implies Identity, URLstring, Titlestring methods
 type Identifier interface {
