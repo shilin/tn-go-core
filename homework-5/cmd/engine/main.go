@@ -5,14 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	// "sort"
 	"strings"
 
 	"go-core.course/pkg/index"
 	"go-core.course/pkg/scan"
 	"go-core.course/pkg/spider"
-	// "go-core.course/pkg/binarytree"
 )
 
 func main() {
@@ -51,19 +48,13 @@ func main() {
 		resultNums = unique(resultNums)
 
 		for _, num := range resultNums {
-			// j := sort.Search(len(docs), func(i int) bool { return docs[i].ID >= num })
 
 			node, error := docs.Find(num)
 			if error != nil {
 				continue
 			}
-			// node.Identity()
 
 			fmt.Printf("Слово встречается в %s - %s \n", node.URLstring(), node.Titlestring())
-			// // if j < len(docs) && docs[j].ID == num {
-			// 	fmt.Printf("Слово встречается в %s - %s \n", docs[j].URL, docs[j].Title)
-			// }
-
 		}
 	}
 }
