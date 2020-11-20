@@ -1,30 +1,30 @@
 package btree
 
-// Identifier implies Identity, URLstring, Titlestring methods
-type Identifier interface {
-	Identity() int
-	URLstring() string
-	Titlestring() string
+// Doc is a struct for representing page with URL and Title
+type Doc struct {
+	ID    int
+	URL   string
+	Title string
 }
 
 // Node is a struct representing Binary Tree Structure
 type Node struct {
 	LeftBranch  *Node
 	RightBranch *Node
-	Identifier
+	*Doc
 }
 
 // Find returns binary tree element
 func (b *Node) Find(id int) (Node, error) {
-	if b.Identity() == id {
+	if b.ID == id {
 		return *b, nil
 	}
 
-	if id < b.Identity() && b.LeftBranch != nil {
+	if id < b.ID && b.LeftBranch != nil {
 		return b.LeftBranch.Find(id)
 	}
 
-	if id > b.Identity() && b.RightBranch != nil {
+	if id > b.ID && b.RightBranch != nil {
 		return b.RightBranch.Find(id)
 	}
 	return Node{}, nil
@@ -32,17 +32,16 @@ func (b *Node) Find(id int) (Node, error) {
 
 // Insert a node into tree, in place
 func (b *Node) Insert(node *Node) {
-
-	if b.Identifier == nil {
-		b = node
+	if b.Doc == nil {
+		*b = *node
 		return
 	}
 
-	if node.Identity() == b.Identity() {
+	if node.ID == b.ID {
 		return
 	}
 
-	if node.Identity() < b.Identity() {
+	if node.ID < b.ID {
 		if b.LeftBranch != nil {
 			b.LeftBranch.Insert(node)
 			return

@@ -20,6 +20,9 @@ func main() {
 	parsedSites := scanResults(s, sites, depth)
 	docs, indexedWords := index.Build(parsedSites)
 
+	// fmt.Println(docs)
+	// fmt.Println(docs.Doc)
+	// fmt.Println(docs.RightBranch)
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("Введите слово для поиска>")
@@ -54,7 +57,7 @@ func main() {
 				continue
 			}
 
-			fmt.Printf("Слово встречается в %s - %s \n", node.URLstring(), node.Titlestring())
+			fmt.Printf("Слово встречается в %s - %s \n", node.URL, node.Title)
 		}
 	}
 }

@@ -6,28 +6,6 @@ import (
 	"go-core.course/pkg/btree"
 )
 
-// Doc is a struct for representing page with URL and Title
-type Doc struct {
-	ID    int
-	URL   string
-	Title string
-}
-
-// Identity method complies to Identifier interface
-func (d *Doc) Identity() int {
-	return d.ID
-}
-
-// URLstring method complies to Identifier interface
-func (d *Doc) URLstring() string {
-	return d.URL
-}
-
-// Titlestring method complies to Identifier interface
-func (d *Doc) Titlestring() string {
-	return d.Title
-}
-
 func generateID(i int, ids []int) (newI int, newID int, newIDs []int) {
 	// cycle through slice of ascenidng natural numbers sequence
 	// using remainder of division by three
@@ -62,6 +40,7 @@ func Build(hm map[string]string) (*btree.Node, map[string][]int) {
 	indexedWords := map[string][]int{}
 
 	docs := new(btree.Node)
+	// root := true
 	i := 0
 	id := 0
 	idsLen := len(hm)
@@ -73,20 +52,16 @@ func Build(hm map[string]string) (*btree.Node, map[string][]int) {
 	for url, title := range hm {
 		i, id, ids = generateID(i, ids)
 
-		newDoc := Doc{
+		newDoc := btree.Doc{
 			ID:    id,
 			URL:   url,
 			Title: title,
 		}
-
 		newNode := new(btree.Node)
-		newNode.Identifier = &newDoc
 
-		if docs.Identifier == nil {
-			docs = newNode
-		} else {
-			docs.Insert(newNode)
-		}
+		newNode.Doc = &newDoc
+
+		docs.Insert(newNode)
 
 		words := strings.Fields(title)
 		words = append(words, url)
